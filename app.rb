@@ -37,7 +37,7 @@ post '/callback' do
           response = chatgpt.chat(
               parameters: {
                   model: "gpt-3.5-turbo",
-                  messages: [{ role: "user", content: event.message['text'] }],
+                  messages: [{ role: "user", content: "「英語で送ってください」より後の言葉のみを表示させてください" + event.message['text'] }],
               })
           
           message = {
