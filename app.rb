@@ -41,7 +41,7 @@ post '/callback' do
         when Line::Bot::Event::MessageType::Text
           if event.message['text'].end_with?("語に変更")
             languageData = Language.first
-            newlanguage = event.message['text'].sub("に変更")
+            newlanguage = event.message['text'].sub("に変更","")
             languageData.language = newlanguage
             languageData.save
             Language.first.language
