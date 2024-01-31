@@ -4,6 +4,16 @@ require 'sinatra/reloader' if development?
 require './models.rb'
 require 'line/bot'
 require "openai"
+require 'dotenv'
+
+
+before do
+  p 'before'
+    if Language.all.size == 0
+      Language.create(language: "英語")
+    end
+  # 最初に、もしLanguageデータベースが０だったら、データを一行作成するコード（カウントに近い、デフォルトは英語にしよう）を書く
+end
 get '/' do
   erb :index
 end
@@ -26,17 +36,18 @@ post '/callback' do
     events = client.parse_events_from(body)
 
     events.each do |event|
-  
+    # 隠しファイルにTOKENを格納、Renderのenvironmentに書いてあげる。
+      chatgpt = OpenAI::Client.new(access_token:ENV["OPENAI_ACCESS_TOKEN"])
       case event
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-
-          chatgpt = OpenAI::Client.new(access_token: "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")
+　　　　# この辺りに、もし送られてきた文字に「に変更」が入っていたらデータベースを書き換える処理をする「〜に変更」という文字を文字列から消して言語を抽出する
 
           response = chatgpt.chat(
               parameters: {
                   model: "gpt-3.5-turbo",
+                  # 英語のところをデータベースに入っている言語に変更
                   messages: [{ role: "user", content: "「英語で送ってください」より後の言葉のみを表示させてください" + event.message['text'] }],
               })
           
