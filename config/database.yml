@@ -8,3 +8,7 @@ development:
 
 production:
   <<: *default
+  host: dpg-cmt1gq21hbls73cmho1g-a
+  database: s_original_fdob
+  username: s_original_fdob_user
+  password: GhuzAcTZRGK9wMfhO020jYtYU8hrS5qW
