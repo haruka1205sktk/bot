@@ -33,22 +33,17 @@ post '/callback' do
       error 400 do 'Bad Request' end
     end
     events = client.parse_events_from(body)
-
     events.each do |event|
-   
       chatgpt = OpenAI::Client.new(access_token:ENV["OPENAI_ACCESS_TOKEN"])
       case event
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-　　
-
           if event.message['text'].end_with?("語に変更")
             languageData = Language.first
             newlanguage = event.message['text'].sub("に変更")
             languageData.language = newlanguage
             languageData.save
-            
             Language.first.language
             message = {
               type: 'text',
