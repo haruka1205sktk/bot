@@ -44,22 +44,28 @@ post '/callback' do
         when Line::Bot::Event::MessageType::Text
 　　　　# この辺りに、もし送られてきた文字に「に変更」が入っていたらデータベースを書き換える処理をする「〜に変更」という文字を文字列から消して言語を抽出する
 
-          response = chatgpt.chat(
-              parameters: {
-                  model: "gpt-3.5-turbo",
-                  # 英語のところをデータベースに入っている言語に変更
-                  messages: [{ role: "user", content: "「英語で送ってください」より後の言葉のみを表示させてください" + event.message['text'] }],
-              })
-          
-          message = {
-            type: 'text',
-            text: response.dig("choices", 0, "message", "content")
-          }
+          if event.message['text'].include?("語に変更")
+            Language.first
+          else
+            languageData = Language.first
+            response = chatgpt.chat(
+                parameters: {
+                    model: "gpt-3.5-turbo",
+                    
+                    # 英語のところをデータベースに入っている言語に変更
+                    messages: [{ role: "user", content: "「" + languageData.language + "で送ってください」より後の言葉のみを表示させてください" + event.message['text'] }],
+                })
+            
+            message = {
+              type: 'text',
+              text: response.dig("choices", 0, "message", "content")
+            }
+          end
         end
       end
       client.reply_message(event['replyToken'], message)
     end
-    head :ok
+    
 end
 
 
