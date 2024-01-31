@@ -44,8 +44,17 @@ post '/callback' do
         when Line::Bot::Event::MessageType::Text
 　　　　# この辺りに、もし送られてきた文字に「に変更」が入っていたらデータベースを書き換える処理をする「〜に変更」という文字を文字列から消して言語を抽出する
 
-          if event.message['text'].include?("語に変更")
-            Language.first
+          if event.message['text'].end_with?("語に変更")
+            languageData = Language.first
+            newlanguage = event.message['text'].sub("に変更")
+            languageData.language = newlanguage
+            languageData.save
+            
+            Language.first.language
+            message = {
+              type: 'text',
+              text: Language.first.language + "に変更しました"
+            }
           else
             languageData = Language.first
             response = chatgpt.chat(
@@ -53,7 +62,7 @@ post '/callback' do
                     model: "gpt-3.5-turbo",
                     
                     # 英語のところをデータベースに入っている言語に変更
-                    messages: [{ role: "user", content: "「" + languageData.language + "で送ってください」より後の言葉のみを表示させてください" + event.message['text'] }],
+                    messages: [{ role: "user", content: languageData.language + "に" + event.message['text'] + "を翻訳して下さい。" +  "結果は以下の文章に沿うように答えて下さい。" + "「"+ event.message['text'] + "は" +  languageData.language + "で〜という。" + "」"}],
                 })
             
             message = {
