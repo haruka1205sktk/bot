@@ -66,7 +66,7 @@ post '/callback' do
             
             message = {
               type: 'text',
-              text: response.dig("choices", 0, "message", "content"
+              text: response.dig("choices", 0, "message", "content")
             }
           end
         end
