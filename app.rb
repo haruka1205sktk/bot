@@ -58,7 +58,7 @@ post '/callback' do
               parameters: {
                 model: "gpt-3.5-turbo",
                   messages: [
-                    { role: "system", content: languageData.language + "に" + "翻訳して下さい" },
+                    { role: "system", content: languageData.language + "に" + "翻訳して下さい" + "読み方もつけて下さい" },
                     { role: "user", content: event.message['text'] }
                   ]
               }
