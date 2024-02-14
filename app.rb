@@ -5,6 +5,7 @@ require './models.rb'
 require 'line/bot'
 require "openai"
 require 'dotenv'
+require 'json'
 
 
 before do
@@ -27,8 +28,7 @@ end
  
 post '/callback' do
     request.body.rewind
-    data = JSON.parse(request.body.read)
-    user_id = data['events'][0]['source']['userId']
+
     p "ok"
     body = request.body.read
     signature = request.env['HTTP_X_LINE_SIGNATURE']
@@ -74,7 +74,6 @@ post '/callback' do
       client.reply_message(event['replyToken'], message)
     end
     status 200
-    body ''
 end
 
 
