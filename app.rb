@@ -20,8 +20,8 @@ end
 
 def client
         @client ||= Line::Bot::Client.new { |config|
-          config.channel_secret = "a9a7928fd25356ca14b0e0aa05b6568c"
-          config.channel_token = "uOSv2yphg2AkqPJOKJd6et3jVEA+YTwlKUflGvCikdDW3T81UBiOtsnkfGfmZps4uoaL2HPn4yha2CnidLe8cTHv1xLINVqDAVlBWcUqIof98V/SFHG5ShXxTxrd2/lXhypHaUfMsm2AXeZTtDCWUAdB04t89/1O/w1cDnyilFU="
+          config.channel_secret = ENV["CHANNEL_SECRET"]
+          config.channel_token = ENV["CHANNEL_TOKEN"]
         }
 end
  
