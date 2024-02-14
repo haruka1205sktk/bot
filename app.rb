@@ -20,12 +20,15 @@ end
 
 def client
         @client ||= Line::Bot::Client.new { |config|
-          config.channel_secret = "a9a7928fd25356ca14b0e0aa05b6568c"
-          config.channel_token = "uOSv2yphg2AkqPJOKJd6et3jVEA+YTwlKUflGvCikdDW3T81UBiOtsnkfGfmZps4uoaL2HPn4yha2CnidLe8cTHv1xLINVqDAVlBWcUqIof98V/SFHG5ShXxTxrd2/lXhypHaUfMsm2AXeZTtDCWUAdB04t89/1O/w1cDnyilFU="
+          config.channel_secret = ENV["CHANNEL_SECRET"]
+          config.channel_token = ENV["CHANNEL_TOKEN"]
         }
 end
  
 post '/callback' do
+    request.body.rewind
+    data = JSON.parse(request.body.read)
+    user_id = data['events'][0]['source']['userId']
     p "ok"
     body = request.body.read
     signature = request.env['HTTP_X_LINE_SIGNATURE']
@@ -52,21 +55,26 @@ post '/callback' do
           else
             languageData = Language.first
             response = chatgpt.chat(
-                parameters: {
-                    model: "gpt-3.5-turbo",
-                    messages: [{ role: "user", content: languageData.language + "に" + event.message['text'] + "を翻訳して下さい。" + "結果は以下の文章に沿うように答えて下さい。" + "「"+ event.message['text'] + "は" +  languageData.language + "で〜という。" + "」"}],
-                })
+              parameters: {
+                model: "gpt-3.5-turbo",
+                  messages: [
+                    { role: "system", content: languageData.language + "に" + "翻訳して下さい" },
+                    { role: "user", content: event.message['text'] }
+                  ]
+              }
+            )
             
             message = {
               type: 'text',
-              text: response.dig("choices", 0, "message", "content")
+              text: response.dig("choices", 0, "message", "content"
             }
           end
         end
       end
       client.reply_message(event['replyToken'], message)
     end
-    
+    status 200
+    body ''
 end
 
 
