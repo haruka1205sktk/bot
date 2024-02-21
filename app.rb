@@ -39,9 +39,13 @@ post '/callback' do
     events.each do |event|
       chatgpt = OpenAI::Client.new(access_token:ENV["OPENAI_ACCESS_TOKEN"])
       case event
+      when Line::Bot::Event::Follow
+      # フォローした時にユーザーidを取得して、lineのユーザーidからリンクを作成、そのリンクをユーザーに送る動作をこの中に書く
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
+        # ユーザーidを取得して、languageDataにユーザーidと一致するユーザーの言語を持ってくる（言語データとユーザーデータの連携が必要）
+        #言語を変更する場合はユーザーの言語を変更
           if event.message['text'].end_with?("語に変更")
             languageData = Language.first
             newlanguage = event.message['text'].sub("に変更","")
@@ -58,7 +62,7 @@ post '/callback' do
               parameters: {
                 model: "gpt-3.5-turbo",
                   messages: [
-                    { role: "system", content: languageData.language + "に" + "翻訳して下さい" + "発音の仕方を日本語で教えてください" + "翻訳と発音の仕方以外は答えなくて大丈夫です"},
+                    { role: "system", content: languageData.language + "に" + "翻訳して下さい" + "発音をカタカナで教えてください" + "翻訳と発音の仕方以外は答えなくて大丈夫です"},
                     { role: "user", content: event.message['text'] }
                   ]
               }
