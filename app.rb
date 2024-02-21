@@ -58,7 +58,7 @@ post '/callback' do
               parameters: {
                 model: "gpt-3.5-turbo",
                   messages: [
-                    { role: "system", content: languageData.language + "に" + "翻訳して下さい" + "発音の仕方を日本語で教えてください" },
+                    { role: "system", content: languageData.language + "に" + "翻訳して下さい" + "発音の仕方を日本語で教えてください" + "翻訳と発音の仕方以外は答えなくて大丈夫です"},
                     { role: "user", content: event.message['text'] }
                   ]
               }
