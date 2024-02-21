@@ -62,7 +62,7 @@ post '/callback' do
               parameters: {
                 model: "gpt-3.5-turbo",
                   messages: [
-                    { role: "system", content: languageData.language + "に" + "翻訳して下さい" + "発音をカタカナで教えてください" + "翻訳と発音の仕方以外は答えなくて大丈夫です"},
+                    { role: "system", content: languageData.language + "に" + "翻訳して下さい" + "翻訳した言語の発音をカタカナで教えてください" + "翻訳した結果と発音以外は出力しなくて大丈夫です"},
                     { role: "user", content: event.message['text'] }
                   ]
               }
@@ -80,6 +80,19 @@ post '/callback' do
     status 200
 end
 
+# get '/userid/何でも良いよ'do
+# 認証ページ作ろう
+# 認証ページで名前を登録するよ
+# end
+
+# post '/#{userid}/何でも良いよ' do
+# データベースにuseridとユーザーの名前を登録
+# 送信したら認証完了画面に行くようにしよう
+# end
+
+# get '/認証完了' do
+
+# end
 
 # LINE Developers登録完了後に作成される環境変数の認証
  
