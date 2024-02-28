@@ -90,13 +90,13 @@ post '/callback' do
 end
 
  get '/:id/confirm'do
-   @userid=params[:id]
+   @userid = params[:id]
    erb :index
 # 認証ページ作ろう
 # 認証ページで名前を登録するよ
  end
  
- post '/:id/confirm'do
+ post '/:id/confirm' do
    userid=params[:id]
    Language.create(language: "英語", user: params[:username], userid: params[:id])
    redirect '/done'

@@ -7,13 +7,13 @@
   <title>タイトル</title>
 </head>
 <body>
-  <form method="post" action="/callback">
-    <button >送信</button>
-  </form>
+  <!--<form method="post" action="/callback">-->
+  <!--  <button >送信</button>-->
+  <!--</form>-->
 
-  <form method="post" action="<%= @userid %>/confirm">
-  <input type="text" name="username" placeholder="ユーザー名"><br>
-  <input type="submit" value="登録">
+  <form method="post" action="/<%= @userid %>/confirm">
+    <input type="text" name="username" placeholder="ユーザー名"><br>
+    <input type="submit" value="登録">
   </form>
 
 </body>
