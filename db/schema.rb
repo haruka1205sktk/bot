@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_31_034552) do
+ActiveRecord::Schema.define(version: 2024_02_21_103038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "languages", force: :cascade do |t|
     t.string "language"
+    t.string "user"
+    t.integer "userid"
   end
 
 end
