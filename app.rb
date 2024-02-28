@@ -53,19 +53,22 @@ post '/callback' do
         when Line::Bot::Event::MessageType::Text
         # ユーザーidを取得して、languageDataにユーザーidと一致するユーザーの言語を持ってくる（言語データとユーザーデータの連携が必要）
         #言語を変更する場合はユーザーの言語を変更
-        userid = event['source']['userId']
-        Language.find_by(userid: userid)
+       
           if event.message['text'].end_with?("語に変更")
+          
+            userid = event['source']['userId']
+            p userid
             languageData = Language.find_by(userid: userid)
             newlanguage = event.message['text'].sub("に変更","")
             languageData.language = newlanguage
             languageData.save
-            Language.first.language
+           
             message = {
               type: 'text',
-              text: Language.first.language + "に変更しました"
+              text: Language.find_by(userid: userid) + "に変更しました"
             }
           else
+             p userid
             languageData = Language.find_by(userid: userid)
             response = chatgpt.chat(
               parameters: {
