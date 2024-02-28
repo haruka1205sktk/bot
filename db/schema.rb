@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2024_02_21_103038) do
   create_table "languages", force: :cascade do |t|
     t.string "language"
     t.string "user"
-    t.integer "userid"
+    t.string "userid"
   end
 
 end
