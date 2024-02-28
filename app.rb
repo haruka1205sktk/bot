@@ -43,7 +43,7 @@ post '/callback' do
          userid = event['source']['userId']
         message = {
           type: 'text',
-          text: 'https://bot-l5fv.onrender.com/'+userid+'/comfirm'
+          text: 'https://bot-l5fv.onrender.com/'+userid+'/confirm'
 
 
         }
