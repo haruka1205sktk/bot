@@ -51,7 +51,7 @@ post '/callback' do
           
             userid = event['source']['userId']
             p userid
-            p Language.find(2).userid
+
             languageData = Language.find_by(userid: userid)
             newlanguage = event.message['text'].sub("に変更","")
             languageData.language = newlanguage
@@ -59,7 +59,7 @@ post '/callback' do
            
             message = {
               type: 'text',
-              text: Language.find_by(userid: userid) + "に変更しました"
+              text: Language.find_by(userid: userid).language + "に変更しました"
             }
           else
             p userid
