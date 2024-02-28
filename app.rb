@@ -62,6 +62,8 @@ post '/callback' do
               text: Language.find_by(userid: userid).language + "に変更しました"
             }
           else
+           
+            userid = event['source']['userId']
             p userid
             languageData = Language.find_by(userid: userid)
             response = chatgpt.chat(
