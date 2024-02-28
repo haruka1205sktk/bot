@@ -7,13 +7,6 @@ require "openai"
 require 'dotenv'
 require 'json'
 
-
-before do
-  p 'before'
-    if Language.all.size == 0
-      Language.create(language: "英語")
-    end
-end
 get '/' do
   erb :index
 end
@@ -68,7 +61,7 @@ post '/callback' do
               text: Language.find_by(userid: userid) + "に変更しました"
             }
           else
-             p userid
+            p userid
             languageData = Language.find_by(userid: userid)
             response = chatgpt.chat(
               parameters: {
@@ -100,7 +93,6 @@ end
  end
  
  post '/:id/confirm' do
-   userid=params[:id]
    Language.create(language: "英語", user: params[:username], userid: params[:id])
    redirect '/done'
 # 認証ページ作ろう
