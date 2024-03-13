@@ -59,7 +59,7 @@ post '/callback' do
            
             message = {
               type: 'text',
-              text: Language.find_by(userid: userid).language + "に変更しました"
+              text: event.message['text'].sub("に変更","") + "に変更しました"
             }
           else
            
@@ -70,7 +70,7 @@ post '/callback' do
               parameters: {
                 model: "gpt-3.5-turbo",
                   messages: [
-                    { role: "system", content: languageData.language + "に" + "翻訳して下さい" + "翻訳した言語の発音をカタカナで教えてください" + "翻訳した結果と発音以外は出力しなくて大丈夫です"},
+                    { role: "system", content: "あなたは翻訳者です。" + languageData.language + "に" + "翻訳し、" + "翻訳した言語と翻訳した言語の日本語での発音を出力してください。" + "翻訳した結果と発音以外は出力しなくて大丈夫です。"},
                     { role: "user", content: event.message['text'] }
                   ]
               }
